@@ -80,6 +80,9 @@ public class User {
         this.email = email;
     }
 
+    /**
+     * это мой первый билдер
+     */
     public static class Builder {
         private User newUser;
 
