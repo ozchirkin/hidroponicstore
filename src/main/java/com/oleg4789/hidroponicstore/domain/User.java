@@ -13,6 +13,9 @@ public class User {
     private String telephoneNumber;
     private BigDecimal balance;
 
+    /**
+     * @return идентификатор пользователя
+     */
     public int getUserId() {
         return userId;
     }
