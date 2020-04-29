@@ -80,6 +80,14 @@ public class User {
         this.email = email;
     }
 
+    public BigDecimal getBalance() {
+        return balance;
+    }
+
+    public void setBalance(BigDecimal balance) {
+        this.balance = balance;
+    }
+
     /**
      * это мой первый билдер
      */
