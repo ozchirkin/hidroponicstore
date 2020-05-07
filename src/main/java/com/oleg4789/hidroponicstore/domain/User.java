@@ -20,6 +20,21 @@ public class User {
         return userId;
     }
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId=" + userId +
+                ", firstName='" + firstName + '\'' +
+                ", secondName='" + secondName + '\'' +
+                ", role=" + role +
+                ", login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", telephoneNumber='" + telephoneNumber + '\'' +
+                ", balance=" + balance +
+                '}';
+    }
+
     public void setUserId(int userId) {
         this.userId = userId;
     }

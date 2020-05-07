@@ -1,5 +1,7 @@
 package com.oleg4789.hidroponicstore.DAO;
 
+import com.mysql.jdbc.Driver;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -12,11 +14,11 @@ public class CreateConnection {
 
     static Connection getConnection() {
 
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            Class.forName("com.mysql.cj.jdbc.Driver");
+//        } catch (ClassNotFoundException e) {
+//            e.printStackTrace();
+//        }
 
         try {
             connection = DriverManager.getConnection(url, user, password);
