@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 import java.sql.*;
 import java.util.List;
 
-public class testDaoUsed {
+public class testDaoUser {
     private static Connection connection = null;
     private static final String url = "jdbc:mysql://localhost:3306/mydb?useUnicode=true&serverTimezone=UTC&useSSL=false&allowPublicKeyRetrieval=true&useSSL=false";
     private static final String user = "root";
@@ -41,21 +41,20 @@ public class testDaoUsed {
         BigDecimal balanceForJuma = new BigDecimal(300);
         user2.setBalance(balanceForJuma);
 
-        UserDao userDao = new UserDao();
-
-        Connection createdConnection = CreateConnection.getConnection();
+        Connection createdConnection = ConnectionCreator.getConnection();
+        UserDao userDao = new UserDao(connection);
 
         try {
 
             //  Добавление
-            userDao.add(user1);
-            userDao.add(user2);
+//            userDao.add(user1);
+//            userDao.add(user2);
       // Получение по ID
             User user3 = userDao.getUserById(2);
             System.out.println(user3.toString());
       // Удаление
-            userDao.remove(user1);
-            userDao.add(user1);
+//            userDao.remove(user1);
+//            userDao.add(user1);
       // Докидываем владику на сосиску, тестим update
             BigDecimal addBalance = new BigDecimal(100);
             vladickBalance = vladickBalance.add(addBalance);

@@ -75,8 +75,8 @@ public class User {
         return password;
     }
 
-    public void setPassword(String pasword) {
-        this.password = pasword;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getEmail() {
@@ -103,20 +103,16 @@ public class User {
         this.balance = balance;
     }
 
-    /**
-     * это мой первый билдер
-     */
     public static class Builder {
         private User newUser;
 
         public Builder() {
-            System.out.println("this is constructor");
-            newUser = new User(); // чем отличается это от записи : User newUser = new User();
+            newUser = new User();
         }
 
         public Builder withUserId(int userId) {
             newUser.userId = userId;
-            return this;// return this это тоже самое что и return userId ? или что тут вообше возврашается
+            return this;
         }
 
         public Builder withFirstName(String firstName) {
@@ -162,9 +158,5 @@ public class User {
         public User build() {
             return newUser;
         }
-
-
     }
-
-
 }
