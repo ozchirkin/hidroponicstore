@@ -3,6 +3,7 @@ package com.oleg4789.hidroponicstore.DAO;
 import com.oleg4789.hidroponicstore.domain.Role;
 import com.oleg4789.hidroponicstore.domain.User;
 
+import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -93,6 +94,34 @@ public class UserDao {
 
         return null;
     }
+    public User getUserByLogin(String login) throws SQLException, DaoException {
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        final String SQL = "SELECT first_name FROM mydb.users WHERE login = ? OR email = ?";
+
+        try {
+            preparedStatement = connection.prepareStatement(SQL);
+            preparedStatement.setString(1, login);
+            preparedStatement.setString(2, login);
+            resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                return getUserFromResultSet(resultSet);
+            }
+
+        } catch (SQLException e) {
+            throw new DaoException("not found users with such login or mail" , e);
+        } finally {
+            if (preparedStatement != null) {
+                preparedStatement.close();
+            }
+            if (resultSet != null) {
+                resultSet.close();
+            }
+        }
+
+        return null;
+    }
 
     public void update(User user) throws SQLException {
         PreparedStatement preparedStatement = null;
@@ -119,6 +148,41 @@ public class UserDao {
                 preparedStatement.close();
             }
 
+        }
+    }
+
+    public void updateUserCash(int id, BigDecimal sum, boolean target) throws SQLException, ArithmeticException {
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        BigDecimal balance;
+        BigDecimal newBalance = null;
+
+        final String SQL1 = "SELECT balance FROM mydb.users WHERE user_id=?";
+        final String SQL2 = "UPDATE USERS SET balance=? WHERE user_id=?";
+
+        try {
+            preparedStatement = connection.prepareStatement(SQL1);
+            preparedStatement.setInt(1, id);
+            resultSet = preparedStatement.executeQuery();
+            balance = resultSet.getBigDecimal("balance");
+
+            if (target) {
+                newBalance = balance.add(sum);
+            } else {
+                newBalance = balance.subtract(sum);
+            }
+            preparedStatement = connection.prepareStatement(SQL2);
+            preparedStatement.setBigDecimal(1, newBalance);
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ArithmeticException ex) {
+            ex.printStackTrace();
+        } finally {
+            if (preparedStatement != null) {
+                preparedStatement.close();
+            }
         }
     }
 

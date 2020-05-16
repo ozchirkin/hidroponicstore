@@ -13,12 +13,14 @@ public class User {
     private String telephoneNumber;
     private BigDecimal balance;
 
+    public User() {
+        this.balance = new BigDecimal(0);
+    }
+
     /**
      * @return идентификатор пользователя
      */
-    public int getUserId() {
-        return userId;
-    }
+
 
     @Override
     public String toString() {
@@ -34,6 +36,8 @@ public class User {
                 ", balance=" + balance +
                 '}';
     }
+
+    public int getUserId() { return userId; }
 
     public void setUserId(int userId) {
         this.userId = userId;
