@@ -97,7 +97,7 @@ public class UserDao {
     public User getUserByLogin(String login) throws SQLException, DaoException {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
-        final String SQL = "SELECT first_name FROM mydb.users WHERE login = ? OR email = ?";
+        final String SQL = "SELECT * FROM mydb.users WHERE login = ? OR email = ?";
 
         try {
             preparedStatement = connection.prepareStatement(SQL);
@@ -151,40 +151,6 @@ public class UserDao {
         }
     }
 
-    public void updateUserCash(int id, BigDecimal sum, boolean target) throws SQLException, ArithmeticException {
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        BigDecimal balance;
-        BigDecimal newBalance = null;
-
-        final String SQL1 = "SELECT balance FROM mydb.users WHERE user_id=?";
-        final String SQL2 = "UPDATE USERS SET balance=? WHERE user_id=?";
-
-        try {
-            preparedStatement = connection.prepareStatement(SQL1);
-            preparedStatement.setInt(1, id);
-            resultSet = preparedStatement.executeQuery();
-            balance = resultSet.getBigDecimal("balance");
-
-            if (target) {
-                newBalance = balance.add(sum);
-            } else {
-                newBalance = balance.subtract(sum);
-            }
-            preparedStatement = connection.prepareStatement(SQL2);
-            preparedStatement.setBigDecimal(1, newBalance);
-            preparedStatement.executeUpdate();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (ArithmeticException ex) {
-            ex.printStackTrace();
-        } finally {
-            if (preparedStatement != null) {
-                preparedStatement.close();
-            }
-        }
-    }
 
     public void remove(User user) throws SQLException {
         PreparedStatement preparedStatement = null;

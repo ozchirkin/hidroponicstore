@@ -40,7 +40,7 @@ public class UserService {
     public User userLogin(String login, String password) throws SQLException, DaoException {
         User user = userDao.getUserByLogin(login);
 
-        if(user.getPassword().equals(password)) {
+        if (user.getPassword().equals(password)) {
             return user;
         }
         return null;
@@ -56,8 +56,22 @@ public class UserService {
         return userDao.getUserById(id);
     }
 
-    public void userUpdateCash(int userId, BigDecimal sum, boolean target) throws SQLException {
+    public void updateCash(int userId, BigDecimal sum, boolean target) throws SQLException, DaoException, ArithmeticException {
+        User user = userDao.getUserById(userId);
+        BigDecimal newBalance = null;
+        BigDecimal balance = user.getBalance();
 
-        userDao.updateUserCash(userId, sum, target);
+        try {
+            if (target) {
+                newBalance = balance.add(sum);
+            } else {
+                newBalance = balance.subtract(sum);
+            }
+            user.setBalance(newBalance);
+            userDao.update(user);
+
+        } catch (ArithmeticException ex) {
+            ex.printStackTrace();
+        }
     }
 }
