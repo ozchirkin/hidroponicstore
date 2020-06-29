@@ -1,5 +1,6 @@
 package com.oleg4789.hidroponicstore.DAO;
 
+import com.mysql.cj.x.protobuf.MysqlxPrepare;
 import com.oleg4789.hidroponicstore.domain.Role;
 import com.oleg4789.hidroponicstore.domain.User;
 
@@ -94,6 +95,7 @@ public class UserDao {
 
         return null;
     }
+
     public User getUserByLogin(String login) throws SQLException, DaoException {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -110,7 +112,7 @@ public class UserDao {
             }
 
         } catch (SQLException e) {
-            throw new DaoException("not found users with such login or mail" , e);
+            throw new DaoException("not found users with such login or mail", e);
         } finally {
             if (preparedStatement != null) {
                 preparedStatement.close();
@@ -124,10 +126,8 @@ public class UserDao {
     }
 
     public void update(User user) throws SQLException {
-        PreparedStatement preparedStatement = null;
         final String SQL = "UPDATE USERS SET first_name=?,second_name=?,login=?,password=?,email=?,phone_number=?,balance=?,role=? WHERE user_id=?";
-        try {
-            preparedStatement = connection.prepareStatement(SQL);
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL)) {
 
             preparedStatement.setString(1, user.getFirstName());
             preparedStatement.setString(2, user.getSecondName());
@@ -140,17 +140,8 @@ public class UserDao {
             preparedStatement.setInt(9, user.getUserId());
 
             preparedStatement.executeUpdate();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            if (preparedStatement != null) {
-                preparedStatement.close();
-            }
-
         }
     }
-
 
     public void remove(User user) throws SQLException {
         PreparedStatement preparedStatement = null;

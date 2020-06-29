@@ -56,22 +56,18 @@ public class UserService {
         return userDao.getUserById(id);
     }
 
-    public void updateCash(int userId, BigDecimal sum, boolean target) throws SQLException, DaoException, ArithmeticException {
-        User user = userDao.getUserById(userId);
-        BigDecimal newBalance = null;
-        BigDecimal balance = user.getBalance();
-
+    public void withdraw(int userId, BigDecimal sum) {
         try {
-            if (target) {
-                newBalance = balance.add(sum);
-            } else {
-                newBalance = balance.subtract(sum);
-            }
+            User user = userDao.getUserById(userId);
+
+            BigDecimal balance = user.getBalance();
+            BigDecimal newBalance = balance.subtract(sum);
+
             user.setBalance(newBalance);
             userDao.update(user);
 
-        } catch (ArithmeticException ex) {
-            ex.printStackTrace();
+        } catch (ArithmeticException | SQLException | DaoException e) {
+            e.printStackTrace();
         }
     }
 }
