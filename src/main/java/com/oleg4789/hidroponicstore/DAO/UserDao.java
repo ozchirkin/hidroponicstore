@@ -1,10 +1,8 @@
 package com.oleg4789.hidroponicstore.DAO;
 
-import com.mysql.cj.x.protobuf.MysqlxPrepare;
 import com.oleg4789.hidroponicstore.domain.Role;
 import com.oleg4789.hidroponicstore.domain.User;
 
-import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
