@@ -94,11 +94,38 @@ public class UserDao {
         return null;
     }
 
-    public void update(User user) throws SQLException {
+    public User getUserByLogin(String login) throws SQLException, DaoException {
         PreparedStatement preparedStatement = null;
-        final String SQL = "UPDATE USERS SET first_name=?,second_name=?,login=?,password=?,email=?,phone_number=?,balance=?,role=? WHERE user_id=?";
+        ResultSet resultSet = null;
+        final String SQL = "SELECT * FROM mydb.users WHERE login = ? OR email = ?";
+
         try {
             preparedStatement = connection.prepareStatement(SQL);
+            preparedStatement.setString(1, login);
+            preparedStatement.setString(2, login);
+            resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                return getUserFromResultSet(resultSet);
+            }
+
+        } catch (SQLException e) {
+            throw new DaoException("not found users with such login or mail", e);
+        } finally {
+            if (preparedStatement != null) {
+                preparedStatement.close();
+            }
+            if (resultSet != null) {
+                resultSet.close();
+            }
+        }
+
+        return null;
+    }
+
+    public void update(User user) throws SQLException {
+        final String SQL = "UPDATE USERS SET first_name=?,second_name=?,login=?,password=?,email=?,phone_number=?,balance=?,role=? WHERE user_id=?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL)) {
 
             preparedStatement.setString(1, user.getFirstName());
             preparedStatement.setString(2, user.getSecondName());
@@ -111,14 +138,6 @@ public class UserDao {
             preparedStatement.setInt(9, user.getUserId());
 
             preparedStatement.executeUpdate();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            if (preparedStatement != null) {
-                preparedStatement.close();
-            }
-
         }
     }
 

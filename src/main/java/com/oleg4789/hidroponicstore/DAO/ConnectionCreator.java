@@ -10,7 +10,7 @@ public class ConnectionCreator {
     private static final String USER = "root";
     private static final String PASSWORD = "ac6947zka12o";
 
-    static Connection getConnection() {
+    public static Connection getConnection() {
         try {
             connection = DriverManager.getConnection(URL, USER, PASSWORD);
         } catch (SQLException e) {

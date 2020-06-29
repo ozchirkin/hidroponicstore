@@ -11,7 +11,7 @@ public class Order {
     private PaymentType payType;
     private Status orderStatus;
     private String deliveryAddress;
-    private User userId;
+    private int userId;
     private DeliveryType deliveryType;
     private List<StorageItem> storageItems;
     private int amountItems;
@@ -80,11 +80,11 @@ public class Order {
         this.deliveryAddress = deliveryAddress;
     }
 
-    public User getUserId() {
+    public int getUserId() {
         return userId;
     }
 
-    public void setUserId(User userId) {
+    public void setUserId(int userId) {
         this.userId = userId;
     }
 
