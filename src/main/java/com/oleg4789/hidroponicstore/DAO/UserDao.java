@@ -21,7 +21,7 @@ public class UserDao {
         try {
             preparedStatement = connection.prepareStatement(SQL);
 
-            preparedStatement.setInt(1, user.getUserId());
+            preparedStatement.setInt(1, user.getId());
             preparedStatement.setString(2, user.getFirstName());
             preparedStatement.setString(3, user.getSecondName());
             preparedStatement.setString(4, user.getLogin());
@@ -135,7 +135,7 @@ public class UserDao {
             preparedStatement.setString(6, user.getTelephoneNumber());
             preparedStatement.setBigDecimal(7, user.getBalance());
             preparedStatement.setString(8, String.valueOf(Role.CUSTOMER));
-            preparedStatement.setInt(9, user.getUserId());
+            preparedStatement.setInt(9, user.getId());
 
             preparedStatement.executeUpdate();
         }
@@ -146,7 +146,7 @@ public class UserDao {
         final String SQL = "DELETE FROM Users WHERE user_id =?";
         try {
             preparedStatement = connection.prepareStatement(SQL);
-            preparedStatement.setInt(1, user.getUserId());
+            preparedStatement.setInt(1, user.getId());
             preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
@@ -189,7 +189,7 @@ public class UserDao {
 
     private User getUserFromResultSet(ResultSet resultSet) throws SQLException {
         User user = new User();
-        user.setUserId(resultSet.getInt("user_id"));
+        user.setId(resultSet.getInt("user_id"));
         user.setFirstName(resultSet.getString(2));
         user.setSecondName(resultSet.getString(3));
         user.setLogin(resultSet.getString("login"));
