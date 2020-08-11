@@ -10,12 +10,19 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class AbstractDao<T extends BaseEntity> implements BaseDao<T> {
+    private final String SELECT_FROM = "SELECT * FROM ";
+    private final String WHERE_USER_ID = " WHERE user_id= '";
+    private final String CANT_GET_USER_BY_ID = "Can't get user by id";
+    private final String DELETE_FROM  = "DELETE FROM ";
+    private final String WHERE   = " WHERE ";
+    private final String AND    = " AND ";
+
+
     private Connection connection;
 
     void setConnection(Connection connection) {
         this.connection = connection;
     }
-
 
     public abstract String getQueryForAdd();
 
@@ -23,7 +30,7 @@ public abstract class AbstractDao<T extends BaseEntity> implements BaseDao<T> {
 
     public abstract String getTableName();
 
-    public abstract T getEntityFromResultSet(ResultSet resultSet);
+    public abstract T getEntityFromResultSet(ResultSet resultSet) throws SQLException;
 
     public abstract void setVarForPreparedStatement(T entity, PreparedStatement preparedStatement);
 
@@ -32,7 +39,7 @@ public abstract class AbstractDao<T extends BaseEntity> implements BaseDao<T> {
     public T getById(T entity, Integer id) throws SQLException, DaoException {
         Statement statement = null;
         ResultSet resultSet = null;
-        String SQL = "SELECT * FROM " + getTableName() + " WHERE user_id= '" + entity.getId() + "'";
+        String SQL = SELECT_FROM + getTableName() + WHERE_USER_ID + entity.getId() + "'";
 
         try {
             statement = connection.createStatement();
@@ -43,15 +50,16 @@ public abstract class AbstractDao<T extends BaseEntity> implements BaseDao<T> {
             }
 
         } catch (SQLException e) {
-            throw new DaoException("Can't get user by id" + id, e);
+            throw new DaoException(CANT_GET_USER_BY_ID + id, e);
         }
+
         return null;
     }
 
     @Override
     public List getAll() throws SQLException {
         List<T> entityList = new ArrayList<>();
-        String SQL = "SELECT * FROM " + getTableName();
+        String SQL = SELECT_FROM + getTableName();
         Statement statement = null;
         ResultSet resultSet = null;
         try {
@@ -81,7 +89,7 @@ public abstract class AbstractDao<T extends BaseEntity> implements BaseDao<T> {
     @Override
     public void remove(T entity) throws SQLException {
         PreparedStatement preparedStatement = null;
-        String SQL = "DELETE FROM " + getTableName() + " WHERE user_id =?" + entity.getId();
+        String SQL = DELETE_FROM + getTableName() + WHERE_USER_ID + entity.getId();
         try {
             preparedStatement = connection.prepareStatement(SQL);
             preparedStatement.executeUpdate();
@@ -131,7 +139,7 @@ public abstract class AbstractDao<T extends BaseEntity> implements BaseDao<T> {
 
     private String createQueryForGetByParameters(Map<String, String> parameters) {
         StringBuilder query = new StringBuilder();
-        query.append("SELECT FROM ").append(getTableName()).append(" WHERE ");
+        query.append(SELECT_FROM).append(getTableName()).append( WHERE );
 
         //    for (Map.Entry<String, String> entry : map.entrySet()) {
         //    System.out.println(entry.getKey()  + entry.getValue());
@@ -141,7 +149,7 @@ public abstract class AbstractDao<T extends BaseEntity> implements BaseDao<T> {
                 query.append(key).append(" = '").append(parameters.get(key)).append("'");
                 return query.toString();
             } else {
-                query.append(key).append(" = '").append(parameters.get(key)).append("'").append(" AND ");
+                query.append(key).append(" = '").append(parameters.get(key)).append("'").append( AND );
             }
         }
         return query.toString();
