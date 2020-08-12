@@ -9,15 +9,15 @@ import java.util.Map;
 
 public interface BaseDao<T extends BaseEntity> {
 
-    T getById(T entity, Integer id) throws SQLException, DaoException;
+    T getById(T entity, Integer id) throws  DaoException;
 
-    List<T> getAll() throws SQLException;
+    List<T> getAll() throws DaoException;
 
-    void update(T entity) throws SQLException;
+    void update(T entity) throws DaoException;
 
-    void remove(T entity) throws SQLException;
+    void remove(T entity) throws DaoException;
 
-    void add(T entity) throws SQLException;
+    void add(T entity) throws DaoException;
 
-    List<T> getByParameters(Map< String, String> parameters ) throws SQLException;
+    List<T> getByParameters(Map< String, String> parameters ) throws DaoException;
 }
