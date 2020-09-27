@@ -2,8 +2,7 @@ package com.oleg4789.hidroponicstore.domain;
 
 import java.math.BigDecimal;
 
-public class User {
-    private int userId;
+public class User extends BaseEntity {
     private String firstName;
     private String secondName;
     private Role role;
@@ -25,7 +24,7 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "userId=" + userId +
+                "userId=" + getId() +
                 ", firstName='" + firstName + '\'' +
                 ", secondName='" + secondName + '\'' +
                 ", role=" + role +
@@ -37,11 +36,6 @@ public class User {
                 '}';
     }
 
-    public int getUserId() { return userId; }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
 
     public String getFirstName() {
         return firstName;
@@ -114,10 +108,6 @@ public class User {
             newUser = new User();
         }
 
-        public Builder withUserId(int userId) {
-            newUser.userId = userId;
-            return this;
-        }
 
         public Builder withFirstName(String firstName) {
             newUser.firstName = firstName;
